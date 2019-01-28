@@ -38,7 +38,25 @@ public class Main {
         this.startDate = setDate(reader);
         System.out.print("Enter End Date: ");
         this.endDate = setDate(reader);
-        getWebData();
+        if(sanityDateCheck()) {
+            getWebData();
+        }
+    }
+
+    private boolean sanityDateCheck(){
+        long startUnix = 0;
+        long endUnix = 0;
+        try {
+            startUnix = new SimpleDateFormat("MMM+dd+yyyy").parse(startDate).getTime();
+            endUnix = new SimpleDateFormat("MMM+dd+yyyy").parse(endDate).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if(startUnix > endUnix ) {
+            System.err.println("Sorry, your beginning date can't be longer than your end date.");
+            return false;
+        }
+        return true;
     }
 
     public void getStockSymbol(Scanner reader){
